@@ -10,7 +10,7 @@ const request = require('request');
 const fetchBreedDescription = function(breedName, callback) {
 
   // Generate URL based on CLI args
-  const url = 'https://api.thecccatapi.com/v1/breeds/search?q=' + breedName;
+  const url = 'https://api.thecatapi.com/v1/breeds/search?q=' + breedName;
 
   request(url, (error, response, body) => {
 
