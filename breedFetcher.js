@@ -11,7 +11,7 @@ request(url, (error, response, body) => {
   } else {
 
     const data = JSON.parse(body);
-    console.log(typeof data);
-    // console.log(data[0]);
+
+    console.log(data[0]);
   }
 });
