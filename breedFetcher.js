@@ -1,27 +1,32 @@
 const request = require('request');
-const args = process.argv;
 
-const url = 'https://api.thecccatapi.com/v1/breeds/search?q=' + args[2];
+const fetchBreedDescription = function(breedName, callback) {
 
-request(url, (error, response, body) => {
+  const url = 'https://api.thecccatapi.com/v1/breeds/search?q=' + breedName;
 
-  // Check for error with URL
-  if (error) {
-    throw Error('Error: Invalid URL', error);
-  }
+  request(url, (error, response, body) => {
 
-  // Check for response failure
-  else if (response.statusCode !== 200) {
-    throw Error('Request failed:', response.statusCode);
-  }
-
-  // Print description to console
-  else {
-    const data = JSON.parse(body);
-    let catDescription = data[0].description;
-    if (catDescription === undefined) {
-      console.log("Sorry! Breed not found.");
+    // Check for error with URL
+    if (error) {
+      callback(error.message, null);
+      return;
     }
-    console.log(catDescription);
-  }
-});
+
+    // Format URL data
+    const data = JSON.parse(body);
+    const breed = data[0];
+
+    // Check if breed doesn't exist
+    if (!breed) {
+      callback("Sorry! Breed not found.", null);
+      return;
+    }
+
+    // Return breed description
+    else {
+      return callback(null, breed.description);
+    }
+  });
+};
+
+module.exports = {fetchBreedDescription};
