@@ -1,17 +1,22 @@
 const request = require('request');
 const args = process.argv;
 
-const url = 'https://api.thecatapi.com/v1/breeds/search?q=' + args[2];
+const url = 'https://api.thecccatapi.com/v1/breeds/search?q=' + args[2];
 
 
 request(url, (error, response, body) => {
 
-  if (error || response.statusCode !== 200) {
-    throw Error('An error occured while accessing the URL', error);
+  if (error) {
+    throw Error('Error: Invalid URL', error);
+  } else if (response.statusCode !== 200) {
+    throw Error('Request failed:', response.statusCode);
   } else {
-
     const data = JSON.parse(body);
-
-    console.log(data[0]);
+    let catDescription = data[0].description;
+    if (catDescription === undefined) {
+      console.log("Sorry! Breed not found.");
+    }
+    console.log(catDescription);
   }
+
 });
